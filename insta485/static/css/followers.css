@@ -1,0 +1,45 @@
+a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+img {
+    width: 95%;
+}
+
+hr {
+    margin-left: 0;
+    margin-bottom: 28px;
+    border: solid 1px darkgrey;
+    width: 610px;
+}
+
+.column-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+.row-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.child {
+    width: 50%;
+    margin-left: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.follow {
+    border: solid 1px darkgrey;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+}

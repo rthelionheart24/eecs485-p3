@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>insta485</title>
+    <link rel="stylesheet" href="/static/css/following.css">
+</head>
+<body>
+<div class="column-container" style="max-width: 610px; margin: auto;">
+    <!-- Header Section  -->
+    <div class="row-container" style="width: 610px">
+        <a href="/" class="child">Insta485</a>
+        <div class="child" style="text-align: end">
+            <a href="/explore/">explore</a> |
+            <a href="/users/{{ logname }}/">{{ logname }}</a>
+        </div>
+    </div>
+    <hr>
+    <!-- Body Section -->
+    <div class="column-container">
+        <h3>Following</h3>
+        {% for follow in following %}
+            <div class="follow">
+                <img src="/uploads/{{ follow.user_img_url }}" alt=""
+                     style="width: 25px; height: 30px; margin-top: 14px; margin-left: 15px; margin-right: 2px">
+                <a href="/users/{{ follow.username }}/" class="child" style="width: 37.5%;">{{ follow.username }}</a>
+                {% if follow.username != logname %}
+                    {% if follow.logname_follows_username %}
+                        <div class="row-container" style="margin-left: 140px">
+                            <p class="child" style="text-align: end; color: grey">following</p>
+                            <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+                            <form class="child" action="/following/?target={{ current_url }}" method="post" enctype="multipart/form-data">
+                              <input style="width: 65px" type="submit" name="unfollow" value="unfollow"/>
+                              <input type="hidden" name="username" value="{{ follow.username }}" />
+                              <input type="hidden" name="operation" value="unfollow"/>
+                            </form>
+                        </div>
+                    {% else %}
+                        <div class="row-container" style="justify-content: end">
+                            <p style="text-align: end; color: grey; font-weight: bold; margin-top: 20px; margin-right: 4px; margin-left: 120px">not following</p>
+                            <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+                            <form style="margin-top: 20px" action="/following/?target={{ current_url }}" method="post" enctype="multipart/form-data">
+                              <input style="width: 65px" type="submit" name="follow" value="follow"/>
+                              <input type="hidden" name="username" value="{{ follow.username }}" />
+                              <input type="hidden" name="operation" value="follow"/>
+                            </form>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

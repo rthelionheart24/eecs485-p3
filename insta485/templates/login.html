@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>insta485</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body>
+<div class="column-container" style="max-width: 610px; margin: auto;">
+    <!-- Header Section  -->
+    <div class="row-container" style="width: 610px">
+        <a href="/" class="child">Insta485</a>
+        <p style="font-weight: bold; margin-left: 43%"> login </p>
+    </div>
+    <hr>
+    <div class="content">
+        <!-- DO NOT CHANGE THIS (aside from styling) -->
+        <form action="/accounts/?target={{ url_for('show_index') }}" method="post" enctype="multipart/form-data">
+          <input type="text" name="username" placeholder="username" required/>
+          <input type="password" name="password" placeholder="password" required/>
+          <input style="width: 50%;" type="submit" value="login"/>
+          <input type="hidden" name="operation" value="login"/>
+        </form>
+        <p> Don't have an account? <a href="/accounts/create/">Sign up</a> </p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>insta485</title>
+    <link rel="stylesheet" href="/static/css/delete.css">
+</head>
+<body>
+<div class="column-container" style="max-width: 610px; margin: auto;">
+    <!-- Header Section  -->
+    <div class="row-container" style="width: 610px">
+        <a href="/" class="child">Insta485</a>
+        <div class="child" style="text-align: end">
+            <a href="/explore/">explore</a> |
+            <a href="/users/{{ logname }}/">{{ logname }}</a>
+        </div>
+    </div>
+    <hr>
+    <!-- Body Section -->
+    <div class="column-container" style="margin-left: 50px">
+        <!-- DO NOT CHANGE THIS -->
+        <p> {{ logname }}</p>
+        <form action="/accounts/?target={{ url_for('create') }}" method="post" enctype="multipart/form-data">
+          <input type="submit" name="delete" value="confirm delete account"/>
+          <input type="hidden" name="operation" value="delete"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>

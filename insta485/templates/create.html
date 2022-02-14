@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>insta485</title>
+    <link rel="stylesheet" href="/static/css/create.css">
+</head>
+<body>
+<div class="column-container" style="max-width: 610px; margin: auto;">
+    <!-- Header Section  -->
+    <div class="row-container" style="width: 610px">
+        <a href="/" class="child">Insta485</a>
+        <p style="font-weight: bold; margin-left: 43%"> login </p>
+    </div>
+    <hr>
+    <div class="content">
+        <!-- DO NOT CHANGE THIS (aside from styling) -->
+        <form action="/accounts/?target={{ url_for('show_index') }}" method="post" enctype="multipart/form-data">
+          <div class="row-container"> <p style="width: 30%; display: flex">Photo</p> <input type="file" name="file" required/></div>
+          <div class="row-container"> <p style="width: 30%; display: flex">Name</p>  <input type="text" name="fullname" required/></div>
+          <div class="row-container"> <p style="width: 30%; display: flex">Username</p>  <input type="text" name="username" required/></div>
+          <div class="row-container"> <p style="width: 30%; display: flex">Email</p>  <input type="text" name="email" required/></div>
+          <div class="row-container"> <p style="width: 30%; display: flex">Password</p>  <input type="password" name="password" required/></div>
+          <div class="row-container"> <p style="width: 30%; display: flex"></p>  <input style="width: 30%" type="submit" name="signup" value="sign up"/></div>
+          <input type="hidden" name="operation" value="create"/>
+        </form>
+        <p> Have an account? <a href="/accounts/login/">Log in</a> </p>
+    </div>
+</div>
+</body>
+</html>

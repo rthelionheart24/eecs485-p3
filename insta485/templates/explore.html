@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>insta485</title>
+    <link rel="stylesheet" href="/static/css/explore.css">
+</head>
+<body>
+<div class="column-container" style="max-width: 610px; margin: auto;">
+    <!-- Header Section  -->
+    <div class="row-container" style="width: 610px">
+        <a href="/" class="child">Insta485</a>
+        <div class="child" style="text-align: end">
+            <a href="/explore/">explore</a> |
+            <a href="/users/{{ logname }}/">{{ logname }}</a>
+        </div>
+    </div>
+    <hr>
+    <!-- Body Section -->
+    <div class="column-container">
+        <h3>Discover People</h3>
+        {% for not_follower in not_following %}
+            <div class="follow">
+                <img src="/uploads/{{ not_follower.user_img_url }}" alt=""
+                     style="width: 25px; height: 30px; margin-top: 14px; margin-left: 15px; margin-right: 2px">
+                <a href="/users/{{ not_follower.username }}/" class="child" style="width: 37.5%;">{{ not_follower.username }}</a>
+                <form style="margin-top: 20px; margin-left: 220px" action="/following/?target={{ current_url }}" method="post" enctype="multipart/form-data">
+                    <input type="submit" name="follow" value="follow"/>
+                    <input type="hidden" name="username" value="{{ not_follower.username }}" />
+                    <input type="hidden" name="operation" value="follow"/>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

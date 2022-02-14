@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>insta485</title>
+    <link rel="stylesheet" href="/static/css/edit.css">
+</head>
+<body>
+<div class="column-container" style="max-width: 610px; margin: auto;">
+    <!-- Header Section  -->
+    <div class="row-container" style="width: 610px">
+        <a href="/" class="child">Insta485</a>
+        <div class="child" style="text-align: end">
+            <a href="/explore/">explore</a> |
+            <a href="/users/{{ logname }}/">{{ logname }}</a>
+        </div>
+    </div>
+    <hr>
+    <!-- Body Section -->
+    <div class="column-container" style="margin-left: 50px">
+        <div class="row-container">
+            <!-- User Profile -->
+            <img src="/uploads/{{ filename }}" alt="" style="width: 30px; height: 30px; margin-top: 15px; margin-left: 15px;">
+            <p class="child" style="width: 37.5%; font-weight: bold; margin-left: 20px">{{ logname }}</p>
+        </div>
+        <!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->
+        <form action="/accounts/?target={{ current_url }}" method="post" enctype="multipart/form-data">
+            <div class="row-container"> <p style="width: 20%; display: flex">Photo</p> <input style="width: 200px" type="file" name="file" accept="image/*"/></div>
+            <div class="row-container"> <p style="width: 20%; display: flex">Name</p> <input type="text" name="fullname" value="{{ fullname }}" required/></div>
+            <div class="row-container"> <p style="width: 20%; display: flex">Email</p> <input type="text" name="email" value="{{ email }}" required/></div>
+            <div class="row-container"> <p style="width: 20%; display: flex"></p> <input style="width: 20%" type="submit" name="update" value="submit"/></div>
+            <input type="hidden" name="operation" value="edit_account"/>
+        </form>
+        <a href="/accounts/password/" style="margin-bottom: 20px">Change password</a>
+        <a href="/accounts/delete/">Delete account</a>
+    </div>
+</div>
+</body>
+</html>
