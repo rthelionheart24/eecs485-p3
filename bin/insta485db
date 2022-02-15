@@ -65,6 +65,7 @@ case $1 in
       OWNER="awdeorio"
       sqlite3 -echo -batch ${DB_FILENAME} "INSERT INTO posts(filename, owner) VALUES('${FILENAME}','${OWNER}');"
     done
+    ;;
 
   *)
     usage
