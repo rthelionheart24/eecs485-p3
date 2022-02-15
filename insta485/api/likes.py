@@ -1,7 +1,7 @@
 """REST API for likes."""
 import flask
 import insta485
-from insta485.api.utility import authentication
+from insta485.api.utility import authentication, InvalidUsage
 
 
 @insta485.app.route('/api/v1/likes/', methods=['POST'])
@@ -41,9 +41,9 @@ def unlike(likeid):
     )
     content = cur.fetchall()
     if len(content) == 0:
-        return flask.Response(status=404)
+        raise InvalidUsage("Not Found", 404)
     if content[0]['owner'] != logname:
-        return flask.Response(status=403)
+        raise InvalidUsage("Forbidden", 403)
 
     connection.execute(
         "DELETE FROM likes "

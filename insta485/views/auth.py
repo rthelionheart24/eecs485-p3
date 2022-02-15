@@ -16,6 +16,7 @@ import flask
 import insta485
 from insta485.views.utility import hash_password, user_exists_in_database, \
     save_file, get_profile_pic
+from insta485.api.utility import InvalidUsage
 
 
 @insta485.app.route('/accounts/login/')
@@ -115,7 +116,7 @@ def edit_account():
 def login_account(username, password):
     """Login account."""
     if not username or not password:
-        flask.abort(400)
+        raise InvalidUsage("Bad Request", 400)
 
     connection = insta485.model.get_db()
     cur = connection.execute(
@@ -125,13 +126,13 @@ def login_account(username, password):
     )
     result = cur.fetchall()
     if len(result) == 0:
-        flask.abort(403)
+        raise InvalidUsage("Forbidden", 403)
 
     hashed_password = result[0]['password']
     salt = hashed_password.split('$')[1]
     password = hash_password(password, salt)
     if result[0]['password'] != password:
-        flask.abort(403)
+        raise InvalidUsage("Forbidden", 403)
 
 
 def create_account():
