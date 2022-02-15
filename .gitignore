@@ -72,3 +72,4 @@ Icon
 
 # PyCharm
 .idea/
+*.http
