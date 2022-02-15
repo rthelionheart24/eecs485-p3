@@ -6,6 +6,7 @@ import insta485
 @insta485.app.route('/api/v1/posts/<int:postid_url_slug>/')
 def get_post(postid_url_slug):
     """Return post on postid.
+
     Example:
     {
       "created": "2017-09-28 04:33:28",
