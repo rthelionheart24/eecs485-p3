@@ -94,7 +94,10 @@ def edit_account():
     operation = flask.request.values.get('operation')
 
     if operation == 'login':
-        login_account()
+        username = flask.request.values.get('username')
+        password = flask.request.values.get('password')
+        login_account(username, password)
+        flask.session['username'] = username
     elif operation == 'create':
         create_account()
     elif operation == 'delete':
@@ -109,10 +112,8 @@ def edit_account():
     return flask.redirect(flask.url_for('show_index'))
 
 
-def login_account():
+def login_account(username, password):
     """Login account."""
-    username = flask.request.values.get('username')
-    password = flask.request.values.get('password')
     if not username or not password:
         flask.abort(400)
 
@@ -131,7 +132,6 @@ def login_account():
     password = hash_password(password, salt)
     if result[0]['password'] != password:
         flask.abort(403)
-    flask.session['username'] = username
 
 
 def create_account():

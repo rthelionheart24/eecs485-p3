@@ -2,6 +2,6 @@
 
 
 from insta485.api.posts import get_post
-from insta485.api.posts import ten_newest_posts
+from insta485.api.likes import like
 from insta485.api.index import service_list
 
