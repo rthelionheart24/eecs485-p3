@@ -6,7 +6,7 @@ from insta485.views.utility import get_profile_pic, get_following_list
 
 
 @insta485.app.route('/api/v1/posts/<int:postid_url_slug>/')
-def get_post(postid_url_slug):
+def get_post_by_id(postid_url_slug):
     """Return post on postid.
 
     Example:
@@ -81,7 +81,7 @@ def get_post(postid_url_slug):
 
 
 @insta485.app.route('/api/v1/posts/')
-def ten_newest_posts():
+def get_posts_by_args():
     """Display / route."""
 
     logname = insta485.api.utility.authentication()
@@ -104,17 +104,15 @@ def ten_newest_posts():
         )
 
     pst = cur.fetchall()[0]
+    
+    size = flask.request.args.get("size", 10, type=int)
+
+    print(size)
 
     context = {
         "next": "",
         "results": [],
-        "url": "/api/v1/posts/"
+        "url": f"{flask.request.path}"
     }
-
-    for i in pst:
-        context["results"].append({
-          "postid": i["postid"],
-          "url": f"/api/v1/posts/{i['postid']}/"
-          })
 
     return flask.jsonify(**context)
