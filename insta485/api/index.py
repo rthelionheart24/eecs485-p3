@@ -9,7 +9,7 @@ def service_list():
         "comments": "/api/v1/comments/",
         "likes": "/api/v1/likes/",
         "posts": "/api/v1/posts/",
-        "url":"/api/v1/",
+        "url": "/api/v1/",
     }
     
     return flask.jsonify(**context)

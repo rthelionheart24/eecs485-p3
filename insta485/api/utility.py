@@ -1,7 +1,7 @@
 """Utilities."""
 import flask
 import insta485
-from insta485.views.auth import login_account
+import insta485.views.auth
 
 
 class InvalidUsage(Exception):
@@ -33,7 +33,7 @@ def authentication():
     if flask.request.authorization is not None:
         username = flask.request.authorization['username']
         password = flask.request.authorization['password']
-        login_account(username, password)
+        insta485.views.auth.login_account(username, password)
         return username
     elif 'username' not in flask.session:
         raise InvalidUsage('Forbidden', 403)
