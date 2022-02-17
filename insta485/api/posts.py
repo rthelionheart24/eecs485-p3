@@ -6,7 +6,7 @@ from insta485.views.utility import get_profile_pic, get_following_list
 
 
 @insta485.app.route('/api/v1/posts/<int:postid_url_slug>/')
-def get_post_by_id(postid_url_slug):
+def get_post(postid_url_slug):
     """Return post on postid.
 
     Example:
@@ -27,7 +27,7 @@ def get_post_by_id(postid_url_slug):
     )
     post = cur.fetchall()
     if len(post) == 0:
-        return InvalidUsage("Not Found", 404)
+        raise InvalidUsage("Not Found", 404)
     post = post[0]
 
     cur = connection.execute(
@@ -81,14 +81,10 @@ def get_post_by_id(postid_url_slug):
 
 
 @insta485.app.route('/api/v1/posts/')
-def get_posts_by_args():
-    """Display / route."""
-
-    logname = insta485.api.utility.authentication()
-
+def get_newest_posts():
+    logname = authentication()
     following_list = get_following_list(logname)
     following_list.append(logname)
-
     connection = insta485.model.get_db()
     if len(following_list) == 1:
         cur = connection.execute(
@@ -99,20 +95,33 @@ def get_posts_by_args():
     else:
         cur = connection.execute(
             f"SELECT * FROM posts "
-            f"WHERE owner IN {tuple(following_list)}"
-            f"ORDER BY created DESC"
+            f"WHERE owner IN {tuple(following_list)} "
         )
+    posts = cur.fetchall()
 
-    pst = cur.fetchall()[0]
-    
-    size = flask.request.args.get("size", 10, type=int)
+    size = flask.request.args.get('size', default=10, type=int)
+    page = flask.request.args.get('page', default=0, type=int)
+    postid_lte = flask.request.args.get('postid_lte',
+                                        default=posts[-1]['postid'], type=int)
+    if size < 0 or page < 0:
+        raise InvalidUsage("Bad Request", 400)
+    next_page_url = f"/api/v1/posts/?size={size}&page" \
+                    f"={page + 1}&postid_lte={postid_lte}"
+    start = size * page
+    end = min(postid_lte, size * (page + 1))
 
-    print(size)
+    posts = [post for post in posts if post['postid'] <= postid_lte]
+    query_string = flask.request.query_string.decode('utf-8')
+    query_string = f"?{query_string}" if query_string else ""
+    current_url = f"{flask.request.path}{query_string}"
+    results = [{"postid": post['postid'],
+                "url": f"/api/v1/posts/{post['postid']}/"}
+               for i, post in enumerate(reversed(posts)) if start <= i < end]
 
+    next_page_url = "" if len(results) < size else next_page_url
     context = {
-        "next": "",
-        "results": [],
-        "url": f"{flask.request.path}"
+        "next": next_page_url,
+        "results": results,
+        "url": current_url
     }
-
-    return flask.jsonify(**context)
+    return context
