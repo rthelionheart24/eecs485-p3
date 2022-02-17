@@ -125,3 +125,62 @@ def get_posts_by_args():
         "url": current_url
     }
     return context
+
+# * Richard's solution to api/v1/posts/
+#  logname = insta485.api.utility.authentication()
+
+#     following_list = get_following_list(logname)
+#     following_list.append(logname)
+
+#     size = flask.request.args.get("size", default=10, type=int)
+#     page_number = flask.request.args.get("page", default=0, type=int)
+#     postid_lte = flask.request.args.get("postid_lte", default=None, type=int)
+
+#     if size < 0 or page_number < 0:
+#         raise InvalidUsage("Bad Request", 400)
+
+#     if postid_lte is None:
+#         connection = insta485.model.get_db()
+#         cur = connection.execute(
+#             f"SELECT * FROM posts "
+#             f"WHERE owner IN {tuple(following_list)} "
+#             f"ORDER BY postid DESC "
+#             f"LIMIT {size} OFFSET {page_number * size}; "
+#         )
+#     else:
+#         connection = insta485.model.get_db()
+#         cur = connection.execute(
+#             f"SELECT * FROM posts "
+#             f"WHERE owner IN {tuple(following_list)} AND {postid_lte} >= postid "
+#             f"ORDER BY postid DESC "
+#             f"LIMIT {size} OFFSET {page_number * size}; "
+#         )
+
+#     pst = cur.fetchall()
+
+#     context = {
+#         "next": "",
+#         "results": [],
+#         "url": f"{flask.request.path}"
+#     }
+#     if (len(pst)!=0):
+#         postid_lte = pst[0]['postid']
+#     else:
+#         postid_lte=0
+
+#     if len(pst) < size:
+#         context["next"] = ""
+#     else:
+#         context["next"] = f"/api/v1/posts/?size={size}&page={page_number + 1}&postid_lte={postid_lte}"
+
+#     for p in pst:
+#         context["results"].append({
+#             "postid": p['postid'],
+#             "url": f"/api/v1/posts/{p['postid']}/"
+#         })
+
+#     if (size != 10 or page_number != 0):
+#         context["url"] = flask.request.path+"?" + \
+#             flask.request.query_string.decode('utf-8')
+
+#     return flask.jsonify(**context)
