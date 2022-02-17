@@ -6,7 +6,7 @@ from insta485.views.utility import get_profile_pic, get_following_list
 
 
 @insta485.app.route('/api/v1/posts/<int:postid_url_slug>/')
-def get_post(postid_url_slug):
+def get_post_by_id(postid_url_slug):
     """Return post on postid.
 
     Example:
@@ -81,7 +81,7 @@ def get_post(postid_url_slug):
 
 
 @insta485.app.route('/api/v1/posts/')
-def get_newest_posts():
+def get_posts_by_args():
     logname = authentication()
     following_list = get_following_list(logname)
     following_list.append(logname)
