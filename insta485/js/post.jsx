@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import { utc } from 'moment/moment';
+import Comment from './comment';
+import Likes from './likes';
+import CommentForm from './commentForm';
 
 class Post extends React.Component {
   /* Display number of image and post owner of a single post
   */
-
   constructor(props) {
     // Initialize mutable state
     super(props);
@@ -16,10 +20,14 @@ class Post extends React.Component {
       postShowUrl: '',
       postid: '',
       url: '',
-      comments: '',
+      comments: [],
       created: '',
       likes: '',
     };
+    this.deleteComment = this.deleteComment.bind(this);
+    this.submitComment = this.submitComment.bind(this);
+    this.like = this.like.bind(this);
+    this.unlike = this.unlike.bind(this);
   }
 
   componentDidMount() {
@@ -49,77 +57,126 @@ class Post extends React.Component {
       .catch((error) => console.log(error));
   }
 
+  deleteComment(url) {
+    const { comments } = this.state;
+    fetch(url, { credentials: 'same-origin', method: 'DELETE' })
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+      })
+      .catch((error) => console.log(error));
+    this.setState(
+      { comments: comments.filter((comment) => comment.url !== url) },
+    );
+  }
+
+  submitComment(commentText) {
+    const { comments, postid } = this.state;
+    const url = `/api/v1/comments/?postid=${postid}`;
+    fetch(url, {
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: commentText }),
+    })
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+        return response.json();
+      })
+      .then((comment) => {
+        this.setState({ comments: comments.concat(comment) });
+      })
+      .catch((error) => console.log(error));
+  }
+
+  like() {
+    const { likes, postid } = this.state;
+    const url = `/api/v1/likes/?postid=${postid}`;
+    fetch(url, {
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+        return response.json();
+      })
+      .then((like) => {
+        this.setState((prevState) => ({
+          likes: {
+            lognameLikesThis: true,
+            numLikes: prevState.likes.numLikes + 1,
+            url: like.url,
+          },
+        }));
+      })
+      .catch((error) => console.log(error));
+  }
+
+  unlike() {
+    const { likes } = this.state;
+    fetch(likes.url, { credentials: 'same-origin', method: 'DELETE' })
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+        this.setState((prevState) => ({
+          likes: {
+            lognameLikesThis: false,
+            numLikes: prevState.likes.numLikes - 1,
+            url: null,
+          },
+        }));
+      })
+      .catch((error) => console.log(error));
+  }
+
   render() {
     // This line automatically assigns this.state.imgUrl to the const variable imgUrl
     // and this.state.owner to the const variable owner
     const {
-      imgUrl, owner, ownerImgUrl, ownerShowUrl, postShowUrl, postid, url, comments, created, likes,
+      imgUrl,
+      owner,
+      ownerImgUrl,
+      ownerShowUrl,
+      postShowUrl,
+      postid,
+      url,
+      comments,
+      created,
+      likes,
     } = this.state;
+    const timestamp = moment.utc(created).fromNow();
+
+    const renderComments = () => comments.map((comment) => (
+      <div>
+        <Comment
+          className="comment"
+          url={comment.url}
+          owner={comment.owner}
+          text={comment.text}
+          lognameOwnsThis={comment.lognameOwnsThis}
+          deleteComment={this.deleteComment}
+        />
+      </div>
+    ));
 
     // Render number of post image and post owner
     return (
       <div className="post">
-        <div className="row-container">
-          <img src={`/uploads/${ownerImgUrl}/`} alt="" style="width: 30px; height: 30px; margin-top: 15px; margin-left: 15px;"/>
-          <a href={`/users/${owner}/`} className="child" style="width: 37.5%;">{owner}</a>
-          <a href={`/posts/${postid}/`} className="child" style="text-align: end; color: grey">{{ created }}</a>
-        </div>
-
         <div>
-          <img src={`/uploads/${imgUrl}/`} alt=""/>
-            if (likes == 1)
-              <p class="child">1 like</p>
-            else
-              <p class="child">{likes} likes</p>
-
-          for comment in post.comments{
-            <div class="comment">
-              <a href={`/users/${comment.owner}/`}>{comment.owner}</a> {{ comment.text }}
-              if logname == comment.owner{
-                {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/ }
-                < form action={`/comments/?target=${current_url}`} method="post" enctype="multipart/form-data">
-              <input type="hidden" name="operation" value="delete" />
-              <input type="hidden" name="commentid" value="{{ comment.commentid }}" />
-              <input type="submit" name="uncomment" value="delete" />
-            </form>
-          }
-            </div>
-          }
-          
-            if (liked == true) {
-            {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/}
-            <form class="form" action={`${url_for('edit_likes')}?target={ current_url }`} method="post" enctype="multipart/form-data">
-              <input type="hidden" name="operation" value="unlike" />
-              <input type="hidden" name="postid" value="{ post.postid }" />
-              <input type="submit" name="unlike" value="unlike" />
-        </form>
-        }
-            else{
-  {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/ }
-  <form class="form" action={`/likes/?target=${current_url}`} method="post" enctype="multipart/form-data">
-    <input type="hidden" name="operation" value="like" />
-    <input type="hidden" name="postid" value="{ post.postid }" />
-    <input type="submit" name="like" value="like" />
-  </form>
-}
-            {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/}
-            <form class="form" action={`/comments/?target=${current_url}`} method="post" enctype="multipart/form-data">
-              <input type="hidden" name="operation" value="create" />
-              <input type="hidden" name="postid" value="{{ post.postid }}" />
-              <input type="text" name="text" required />
-              <input type="submit" name="comment" value="comment" />
-            </form>
-if logname == post.owner {
-  {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/ }
-  <form class="form" action={`/posts/?target=${logged_in_user_url}`} method="post" enctype="multipart/form-data">
-    <input type="hidden" name="operation" value="delete" />
-    <input type="hidden" name="postid" value="{{ post.postid }}" />
-    <input type="submit" name="delete" value="delete this post" />
-  </form>
-}
+          <a href={ownerShowUrl}>
+            <img src={ownerImgUrl} alt="" />
+            <p>{ owner }</p>
+          </a>
+          <a href={postShowUrl}>{ timestamp }</a>
         </div>
-
-
+        <img src={imgUrl} alt="" />
+        <Likes
+          numLikes={likes.numLikes}
+          lognameLikesThis={likes.lognameLikesThis}
+          like={this.like}
+          unlike={this.unlike}
+        />
+        {renderComments()}
+        <CommentForm submitComment={this.submitComment} />
       </div>
     );
   }

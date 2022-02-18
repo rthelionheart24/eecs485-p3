@@ -26,7 +26,11 @@ def like():
         "VALUES (?, ?)",
         (logname, postid,)
     )
-    return flask.Response(status=201)
+    cur = connection.execute("SELECT last_insert_rowid()")
+    likeid = cur.fetchall()[0]['last_insert_rowid()']
+    endpoint = f'/api/v1/likes/{likeid}/'
+    response = {'likeid': likeid, 'url': endpoint}
+    return response, 201
 
 
 @insta485.app.route('/api/v1/likes/<likeid>/', methods=['DELETE'])

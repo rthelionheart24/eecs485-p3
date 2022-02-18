@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function LikeUnlikeButton(props) {
-  const { handleClick } = props;
+export default function LikeUnlikeButton(props) {
+  const { handleClick, lognameLikesThis } = props;
   return (
-    <button
-      type="button"
-      className="delete-comment-button"
-      onClick={handleClick}
-    >
-      Delete comment
+    <button className="like-unlike-button" type="submit" onClick={handleClick}>
+      {lognameLikesThis ? 'unlike' : 'like'}
     </button>
   );
 }

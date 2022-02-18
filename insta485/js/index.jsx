@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Post from './post';
-import Header from './header';
 
 class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       next: '',
-      results: '',
+      results: [],
       url: '',
     };
   }
@@ -34,12 +33,9 @@ class Index extends React.Component {
     const feed = results.map((post) => (<Post url={post.url} />));
 
     return (
-      <>
-        <Header />
-        <div>
-          {feed}
-        </div>
-      </>
+      <div>
+        {feed}
+      </div>
     );
   }
 }

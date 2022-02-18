@@ -15,9 +15,10 @@ class CommentForm extends React.Component {
 
   submitComment(event) {
     const { submitComment } = this.props;
-    const { text } = this.state;
+    const { value } = this.state;
     event.preventDefault();
-    submitComment(text);
+    submitComment(value);
+    this.setState({ value: '' });
   }
 
   render() {

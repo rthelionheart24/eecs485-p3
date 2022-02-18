@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Post from './post';
+import Index from "./index";
 
 // This method is only called once
 ReactDOM.render(
   // Insert the post component into the DOM
-  <Post url="/api/v1/posts/1/" />,
+  <Index />,
   // <Comment
   //   text="Example Comment"
   //   lognameOwnsThis
