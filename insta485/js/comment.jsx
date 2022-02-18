@@ -17,9 +17,11 @@ function Comment(props) {
   };
 
   return (
-    <div>
-      <a href={`/users/${owner}/`}>{owner}</a>
-      <p>{text}</p>
+    <div className="comment">
+      <div className="comment-text">
+        <a href={`/users/${owner}/`}>{owner}</a>
+        <p>{text}</p>
+      </div>
       {renderCommentButton()}
     </div>
   );

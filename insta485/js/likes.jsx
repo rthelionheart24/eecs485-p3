@@ -16,12 +16,12 @@ export default function Likes(props) {
 
   return (
     <div>
-      <p>
+      <LikeUnlikeButton handleClick={handleClick} lognameLikesThis={lognameLikesThis} />
+      <p className="likesDisplay">
         {numLikes}
         {' '}
         {numLikes === 1 ? 'like' : 'likes'}
       </p>
-      <LikeUnlikeButton handleClick={handleClick} lognameLikesThis={lognameLikesThis} />
     </div>
   );
 }

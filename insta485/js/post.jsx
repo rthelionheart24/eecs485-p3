@@ -57,18 +57,6 @@ class Post extends React.Component {
       .catch((error) => console.log(error));
   }
 
-  deleteComment(url) {
-    const { comments } = this.state;
-    fetch(url, { credentials: 'same-origin', method: 'DELETE' })
-      .then((response) => {
-        if (!response.ok) throw Error(response.statusText);
-      })
-      .catch((error) => console.log(error));
-    this.setState(
-      { comments: comments.filter((comment) => comment.url !== url) },
-    );
-  }
-
   submitComment(commentText) {
     const { comments, postid } = this.state;
     const url = `/api/v1/comments/?postid=${postid}`;
@@ -88,8 +76,20 @@ class Post extends React.Component {
       .catch((error) => console.log(error));
   }
 
+  deleteComment(url) {
+    const { comments } = this.state;
+    fetch(url, { credentials: 'same-origin', method: 'DELETE' })
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+      })
+      .catch((error) => console.log(error));
+    this.setState(
+      { comments: comments.filter((comment) => comment.url !== url) },
+    );
+  }
+
   like() {
-    const { likes, postid } = this.state;
+    const { postid } = this.state;
     const url = `/api/v1/likes/?postid=${postid}`;
     fetch(url, {
       credentials: 'same-origin',
@@ -161,14 +161,14 @@ class Post extends React.Component {
     // Render number of post image and post owner
     return (
       <div className="post">
-        <div>
+        <div className="row-container">
           <a href={ownerShowUrl}>
-            <img src={ownerImgUrl} alt="" />
-            <p>{ owner }</p>
+            <img src={ownerImgUrl} className="profile-picture" alt="" />
           </a>
-          <a href={postShowUrl}>{ timestamp }</a>
+          <a href={ownerShowUrl} className="username">{ owner }</a>
+          <a href={postShowUrl} className="timestamp">{ timestamp }</a>
         </div>
-        <img src={imgUrl} alt="" />
+        <img src={imgUrl} className="post-image" onDoubleClick={this.like} alt="" />
         <Likes
           numLikes={likes.numLikes}
           lognameLikesThis={likes.lognameLikesThis}

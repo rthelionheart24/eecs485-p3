@@ -12,7 +12,18 @@ hr {
     margin-left: 0;
     margin-bottom: 45px;
     border: solid 1px darkgrey;
-    width: 610px;
+    width: 650px;
+}
+
+button {
+    margin-left: 8px;
+}
+
+input {
+    margin-top: 10px;
+    margin-left: 8px;
+    margin-bottom: 15px;
+    width: 35%;
 }
 
 .column-container {
@@ -23,6 +34,8 @@ hr {
 .row-container {
     display: flex;
     flex-direction: row;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 .child {
@@ -34,16 +47,39 @@ hr {
 
 .comment {
     width: 100%;
-    margin-left: 5px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    align-items: center;
+    margin-left: 8px;
+    margin-top: 0;
+    margin-bottom: 0;
 }
+
+.comment-text {
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    align-items: center;
+}
+
+.comment p {
+    margin-left: 6px;
+    width: 80%
+}
+
+.comment button {
+    width: 21%
+}
+
 
 .post {
     margin-left: 30px;
     margin-right: 30px;
-    margin-bottom: 15px;
-    width: 550px;
+    margin-bottom: 20px;
+    width: 600px;
     display: flex;
     flex-direction: column;
     border: 1px solid grey;
@@ -55,4 +91,34 @@ hr {
     margin-left: 5px;
     margin-top: 0;
     margin-bottom: 15px;
+}
+
+.profile-picture {
+    width: 35px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.username {
+    width: 37.5%;
+    margin: 20px 5px 20px 5px;
+}
+
+.timestamp {
+    width: 50%;
+    margin-left: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: end;
+    color: grey;
+}
+
+.post-image {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.likesDisplay {
+    margin-left: 8px;
+    height: 5px;
 }
