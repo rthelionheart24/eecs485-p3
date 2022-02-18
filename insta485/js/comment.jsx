@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DeleteCommentButton from './DeleteCommentButton';
+import DeleteCommentButton from './deleteCommentButton';
 
 function Comment(props) {
   const { text, lognameOwnsThis, deleteComment } = props;
