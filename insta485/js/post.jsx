@@ -66,40 +66,42 @@ class Post extends React.Component {
         </div>
 
         <div>
-          <img src={`/uploads/${imgUrl}/`} alt="">
+          <img src={`/uploads/${imgUrl}/`} alt=""/>
             if (likes == 1)
               <p class="child">1 like</p>
             else
               <p class="child">{likes} likes</p>
 
-            {% for comment in post.comments %}
+          for comment in post.comments{
             <div class="comment">
-              <a href={`/users/${comment.owner}/`}>{ comment.owner }</a> {{ comment.text }}
-              {% if logname == comment.owner %}
-              {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/}
-              <form action={`/comments/?target=${ current_url }`} method="post" enctype="multipart/form-data">
-                <input type="hidden" name="operation" value="delete" />
-                <input type="hidden" name="commentid" value="{{ comment.commentid }}" />
-                <input type="submit" name="uncomment" value="delete" />
-              </form>
-              {% endif %}
+              <a href={`/users/${comment.owner}/`}>{comment.owner}</a> {{ comment.text }}
+              if logname == comment.owner{
+                {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/ }
+                < form action={`/comments/?target=${current_url}`} method="post" enctype="multipart/form-data">
+              <input type="hidden" name="operation" value="delete" />
+              <input type="hidden" name="commentid" value="{{ comment.commentid }}" />
+              <input type="submit" name="uncomment" value="delete" />
+            </form>
+          }
             </div>
-            {% endfor %}
-            {% if liked == true %}
+          }
+          
+            if (liked == true) {
             {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/}
             <form class="form" action={`${url_for('edit_likes')}?target={ current_url }`} method="post" enctype="multipart/form-data">
               <input type="hidden" name="operation" value="unlike" />
               <input type="hidden" name="postid" value="{ post.postid }" />
               <input type="submit" name="unlike" value="unlike" />
-            </form>
-            {% else %}
-            {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/}
-            <form class="form" action={`/likes/?target=${current_url}`} method="post" enctype="multipart/form-data">
-              <input type="hidden" name="operation" value="like" />
-              <input type="hidden" name="postid" value="{ post.postid }" />
-              <input type="submit" name="like" value="like" />
-            </form>
-            {% endif %}
+        </form>
+        }
+            else{
+  {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/ }
+  <form class="form" action={`/likes/?target=${current_url}`} method="post" enctype="multipart/form-data">
+    <input type="hidden" name="operation" value="like" />
+    <input type="hidden" name="postid" value="{ post.postid }" />
+    <input type="submit" name="like" value="like" />
+  </form>
+}
             {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/}
             <form class="form" action={`/comments/?target=${current_url}`} method="post" enctype="multipart/form-data">
               <input type="hidden" name="operation" value="create" />
@@ -107,14 +109,14 @@ class Post extends React.Component {
               <input type="text" name="text" required />
               <input type="submit" name="comment" value="comment" />
             </form>
-            {% if logname == post.owner %}
-            {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/}
-            <form class="form" action={`/posts/?target=${logged_in_user_url}`} method="post" enctype="multipart/form-data">
-              <input type="hidden" name="operation" value="delete" />
-              <input type="hidden" name="postid" value="{{ post.postid }}" />
-              <input type="submit" name="delete" value="delete this post" />
-            </form>
-            {% endif %}
+if logname == post.owner {
+  {/*<!-- DO NOT CHANGE THIS (aside from where we say 'FIXME') -->*/ }
+  <form class="form" action={`/posts/?target=${logged_in_user_url}`} method="post" enctype="multipart/form-data">
+    <input type="hidden" name="operation" value="delete" />
+    <input type="hidden" name="postid" value="{{ post.postid }}" />
+    <input type="submit" name="delete" value="delete this post" />
+  </form>
+}
         </div>
 
 
