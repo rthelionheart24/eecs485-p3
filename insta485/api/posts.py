@@ -37,14 +37,14 @@ def get_post_by_id(postid_url_slug):
     )
     data = cur.fetchall()
     comments = []
-    for d in data:
+    for _d in data:
         comments.append({
-            "commentid": d['commentid'],
-            "lognameOwnsThis": d['owner'] == logname,
-            "owner": d['owner'],
-            "ownerShowUrl": f"/users/{d['owner']}/",
-            "text": d['text'],
-            "url": f"/api/v1/comments/{d['commentid']}/"
+            "commentid": _d['commentid'],
+            "lognameOwnsThis": _d['owner'] == logname,
+            "owner": _d['owner'],
+            "ownerShowUrl": f"/users/{_d['owner']}/",
+            "text": _d['text'],
+            "url": f"/api/v1/comments/{_d['commentid']}/"
         })
 
     cur = connection.execute(
@@ -53,21 +53,21 @@ def get_post_by_id(postid_url_slug):
         (postid_url_slug,)
     )
     liked_users = cur.fetchall()
-    numLikes = len(liked_users)
-    lognameLikesThis = False
+    num_likes = len(liked_users)
+    logname_likes_this = False
     url = None
-    for d in liked_users:
-        if d['owner'] == logname:
-            lognameLikesThis = True
-            url = f"/api/v1/likes/{d['likeid']}/"
+    for data in liked_users:
+        if data['owner'] == logname:
+            logname_likes_this = True
+            url = f"/api/v1/likes/{data['likeid']}/"
 
     context = {
         "comments": comments,
         "created": post['created'],
         "imgUrl": f"/uploads/{post['filename']}",
         "likes": {
-            "lognameLikesThis": lognameLikesThis,
-            "numLikes": numLikes,
+            "lognameLikesThis": logname_likes_this,
+            "numLikes": num_likes,
             "url": url
         },
         "owner": f"{post['owner']}",
@@ -82,20 +82,19 @@ def get_post_by_id(postid_url_slug):
 
 @insta485.app.route('/api/v1/posts/')
 def get_posts_by_args():
+    """Call API to get posts by args."""
     logname = authentication()
-    following_list = get_following_list(logname)
-    following_list.append(logname)
+    follow_list = get_following_list(logname)
+    follow_list.append(logname)
     connection = insta485.model.get_db()
-    if len(following_list) == 1:
-        cur = connection.execute(
-            "SELECT * FROM posts "
-            "WHERE owner == ?",
-            (logname, )
-        )
-    else:
-        cur = connection.execute(
+    cur = connection.execute(
+        "SELECT * FROM posts "
+        "WHERE owner == ?",
+        (logname, )
+    ) if len(follow_list) == 1 else \
+        connection.execute(
             f"SELECT * FROM posts "
-            f"WHERE owner IN {tuple(following_list)} "
+            f"WHERE owner IN {tuple(follow_list)} "
         )
     posts = cur.fetchall()
 
@@ -151,7 +150,8 @@ def get_posts_by_args():
 #         connection = insta485.model.get_db()
 #         cur = connection.execute(
 #             f"SELECT * FROM posts "
-#             f"WHERE owner IN {tuple(following_list)} AND {postid_lte} >= postid "
+#             f"WHERE owner IN {tuple(following_list)}
+#             AND {postid_lte} >= postid "
 #             f"ORDER BY postid DESC "
 #             f"LIMIT {size} OFFSET {page_number * size}; "
 #         )
@@ -171,7 +171,8 @@ def get_posts_by_args():
 #     if len(pst) < size:
 #         context["next"] = ""
 #     else:
-#         context["next"] = f"/api/v1/posts/?size={size}&page={page_number + 1}&postid_lte={postid_lte}"
+#         context["next"] = f"/api/v1/posts/?size={size}
+#         &page={page_number + 1}&postid_lte={postid_lte}"
 
 #     for p in pst:
 #         context["results"].append({

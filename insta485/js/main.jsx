@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Post from './post';
-import Index from "./index";
+import Index from './index';
 
 // This method is only called once
 ReactDOM.render(

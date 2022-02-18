@@ -6,8 +6,8 @@ from insta485.api.utility import authentication, InvalidUsage
 
 @insta485.app.route('/api/v1/comments/', methods=['POST'])
 def comment():
+    """Comment."""
     logname = authentication()
-    data = flask.request.json
     postid = flask.request.values.get('postid')
     text = flask.request.json.get('text')
     connection = insta485.model.get_db()
@@ -31,6 +31,7 @@ def comment():
 
 @insta485.app.route('/api/v1/comments/<commentid>/', methods=['DELETE'])
 def uncomment(commentid):
+    """Uncomment."""
     logname = authentication()
 
     connection = insta485.model.get_db()

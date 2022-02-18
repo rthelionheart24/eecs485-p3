@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { utc } from 'moment/moment';
 import Comment from './comment';
 import Likes from './likes';
 import CommentForm from './commentForm';
@@ -19,15 +18,26 @@ class Post extends React.Component {
       ownerShowUrl: '',
       postShowUrl: '',
       postid: '',
-      url: '',
-      comments: [],
+      comments: [{
+        commentid: 0,
+        lognameOwnsThis: false,
+        owner: '',
+        ownerShowUrl: '',
+        text: '',
+        url: '',
+      }],
       created: '',
-      likes: '',
+      likes: {
+        lognameLikesThis: false,
+        numLikes: 0,
+        url: '',
+      },
     };
     this.deleteComment = this.deleteComment.bind(this);
     this.submitComment = this.submitComment.bind(this);
     this.like = this.like.bind(this);
     this.unlike = this.unlike.bind(this);
+    this.doubleClick = this.doubleClick.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +58,6 @@ class Post extends React.Component {
           ownerShowUrl: data.ownerShowUrl,
           postShowUrl: data.postShowUrl,
           postid: data.postid,
-          url: data.url,
           comments: data.comments,
           created: data.created,
           likes: data.likes,
@@ -128,6 +137,13 @@ class Post extends React.Component {
       .catch((error) => console.log(error));
   }
 
+  doubleClick() {
+    const { likes } = this.state;
+    if (!likes.lognameLikesThis) {
+      this.like();
+    }
+  }
+
   render() {
     // This line automatically assigns this.state.imgUrl to the const variable imgUrl
     // and this.state.owner to the const variable owner
@@ -137,8 +153,6 @@ class Post extends React.Component {
       ownerImgUrl,
       ownerShowUrl,
       postShowUrl,
-      postid,
-      url,
       comments,
       created,
       likes,
@@ -146,7 +160,7 @@ class Post extends React.Component {
     const timestamp = moment.utc(created).fromNow();
 
     const renderComments = () => comments.map((comment) => (
-      <div>
+      <div key={String(comment.commentid)}>
         <Comment
           className="comment"
           url={comment.url}
@@ -168,7 +182,7 @@ class Post extends React.Component {
           <a href={ownerShowUrl} className="username">{ owner }</a>
           <a href={postShowUrl} className="timestamp">{ timestamp }</a>
         </div>
-        <img src={imgUrl} className="post-image" onDoubleClick={this.like} alt="" />
+        <img src={imgUrl} className="post-image" onDoubleClick={this.doubleClick} alt="" />
         <Likes
           numLikes={likes.numLikes}
           lognameLikesThis={likes.lognameLikesThis}

@@ -6,14 +6,15 @@ from insta485.api.utility import authentication, InvalidUsage
 
 @insta485.app.route('/api/v1/likes/', methods=['POST'])
 def like():
+    """Like."""
     logname = authentication()
 
-    postid = flask.request.values.get('postid')
+    pid = flask.request.values.get('postid')
     connection = insta485.model.get_db()
     cur = connection.execute(
         "SELECT * FROM likes "
         "WHERE owner == ? AND postid == ?",
-        (logname, postid, )
+        (logname, pid, )
     )
     content = cur.fetchall()
     if len(content) == 1:
@@ -24,7 +25,7 @@ def like():
     connection.execute(
         "INSERT INTO likes(owner, postid)"
         "VALUES (?, ?)",
-        (logname, postid,)
+        (logname, pid,)
     )
     cur = connection.execute("SELECT last_insert_rowid()")
     likeid = cur.fetchall()[0]['last_insert_rowid()']
@@ -35,7 +36,8 @@ def like():
 
 @insta485.app.route('/api/v1/likes/<likeid>/', methods=['DELETE'])
 def unlike(likeid):
-    logname = authentication()
+    """Unlike."""
+    username = authentication()
 
     connection = insta485.model.get_db()
     cur = connection.execute(
@@ -46,7 +48,7 @@ def unlike(likeid):
     content = cur.fetchall()
     if len(content) == 0:
         raise InvalidUsage("Not Found", 404)
-    if content[0]['owner'] != logname:
+    if content[0]['owner'] != username:
         raise InvalidUsage("Forbidden", 403)
 
     connection.execute(

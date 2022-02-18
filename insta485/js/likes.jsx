@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LikeUnlikeButton from './likeUnlikeButton';
 
 export default function Likes(props) {
   const {
@@ -16,7 +15,9 @@ export default function Likes(props) {
 
   return (
     <div>
-      <LikeUnlikeButton handleClick={handleClick} lognameLikesThis={lognameLikesThis} />
+      <button className="like-unlike-button" type="submit" onClick={handleClick}>
+        {lognameLikesThis ? 'unlike' : 'like'}
+      </button>
       <p className="likesDisplay">
         {numLikes}
         {' '}
