@@ -90,11 +90,11 @@ class Post extends React.Component {
     fetch(url, { credentials: 'same-origin', method: 'DELETE' })
       .then((response) => {
         if (!response.ok) throw Error(response.statusText);
+        this.setState(
+          { comments: comments.filter((comment) => comment.url !== url) },
+        );
       })
       .catch((error) => console.log(error));
-    this.setState(
-      { comments: comments.filter((comment) => comment.url !== url) },
-    );
   }
 
   like() {

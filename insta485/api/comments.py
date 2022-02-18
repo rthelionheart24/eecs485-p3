@@ -20,7 +20,7 @@ def comment():
     commentid = cur.fetchall()[0]['last_insert_rowid()']
     response = {
         'commentid': commentid,
-        'lognameOwnsThis': 'true',
+        'lognameOwnsThis': True,
         'owner': logname,
         'ownerShowUrl': f'/users/{logname}/',
         'text': text,
