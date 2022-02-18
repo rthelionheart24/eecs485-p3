@@ -6,5 +6,12 @@ import Post from './post';
 ReactDOM.render(
   // Insert the post component into the DOM
   <Post url="/api/v1/posts/1/" />,
+  // <Comment
+  //   text="Example Comment"
+  //   lognameOwnsThis
+  //   deleteComment={() => {
+  //     console.log('Comment Deleted!');
+  //   }}
+  // />,
   document.getElementById('reactEntry'),
 );
