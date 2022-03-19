@@ -1,2 +1,24 @@
-* Closing connection -1
-curl: (3) URL using bad/illegal format or missing URL
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 3.20.238.119:80...
+* Connected to ec2-3-20-238-119.us-east-2.compute.amazonaws.com (3.20.238.119) port 80 (#0)
+> GET /static/js/bundle.js HTTP/1.1
+> Host: ec2-3-20-238-119.us-east-2.compute.amazonaws.com
+> User-Agent: curl/7.77.0
+> Accept: */*
+> Cookie: login=eyJ1c2VybmFtZSI6ImF3ZGVvcmlvIn0.Yg_5cA.9cryfRqo2le5EauRb8Y6XvOrTDE
+> 
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Server: nginx/1.18.0 (Ubuntu)
+< Date: Fri, 18 Feb 2022 19:57:19 GMT
+< Content-Type: application/javascript; charset=utf-8
+< Content-Length: 1091239
+< Connection: keep-alive
+< Content-Disposition: inline; filename=bundle.js
+< Last-Modified: Fri, 18 Feb 2022 19:52:18 GMT
+< Cache-Control: no-cache
+< 
+{ [1061 bytes data]
+ 55 1065k   55  588k    0     0   691k      0  0:00:01 --:--:--  0:00:01  696k100 1065k  100 1065k    0     0  1031k      0  0:00:01  0:00:01 --:--:-- 1037k
+* Connection #0 to host ec2-3-20-238-119.us-east-2.compute.amazonaws.com left intact
